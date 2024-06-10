@@ -173,10 +173,10 @@ namespace ReportSys.Pages.Services
                     // Проход по дням в выбранном промежутке, пропуская выходные
                     for (var date = startDate; date <= endDate; date = date.AddDays(1))
                     {
-                        if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
-                        {
-                            continue; // Пропускаем субботу и воскресенье
-                        }
+                        //if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                        //{
+                        //    continue; // Пропускаем субботу и воскресенье
+                        //}
 
                         var eventsForDate = employee.Events.Where(e => e.Date == date).OrderBy(e => e.Time).ToList();
                         var unavailabilityForDate = employee.Unavailabilitys
@@ -185,8 +185,15 @@ namespace ReportSys.Pages.Services
                         if (eventsForDate.Count == 0 && unavailabilityForDate == null)
                         {
                             //continue; // пропускаем дни, которых нет
-                            colorCell(worksheet, rowIndex, Color.SandyBrown);
+
+                            if (date.DayOfWeek != DayOfWeek.Saturday || date.DayOfWeek != DayOfWeek.Sunday)
+                            {
+                                colorCell(worksheet, rowIndex, Color.SandyBrown);
+                            }                           
                         }
+                        
+
+
 
                         var startRow = rowIndex;
                         if (unavailabilityForDate != null)
@@ -267,102 +274,108 @@ namespace ReportSys.Pages.Services
                                         colorCell(worksheet, rowIndex, Color.SandyBrown);
                                     }
                                 }
+
+                               
+                            }
+                            
+                            if (eventItem.Date.DayOfWeek == DayOfWeek.Saturday || eventItem.Date.DayOfWeek == DayOfWeek.Sunday)
+                            {
+                                colorCell(worksheet, rowIndex, Color.SkyBlue);
                             }
 
+                                        //else
+                                        //{
+                                        //    if (eventItem.Time == firstEventType0.Time)
+                                        //    {
+                                        //        if ((star_time - eventItem.Time > TimeSpan.FromMinutes(3)) && eventItem.Time < star_time)
+                                        //        {
+                                        //            colorCell(worksheet, rowIndex, Color.Green);
+                                        //        }
+                                        //        else
+                                        //        {
+                                        //            if (worksheet.Cells[rowIndex, 5].Value != " - " && worksheet.Cells[rowIndex, 6].Value != "-" && worksheet.Cells[rowIndex, 5].Value != null && worksheet.Cells[rowIndex, 6].Value != null)
+                                        //            {
+                                        //                if (toTimeOnly(worksheet.Cells[rowIndex, 5].Value.ToString()) <= eventItem.Time && eventItem.Time <= toTimeOnly(worksheet.Cells[rowIndex, 6].Value.ToString()))
+                                        //                {
+                                        //                    colorCell(worksheet, rowIndex, Color.Yellow);
+                                        //                }
+                                        //            }
+                                        //            else
+                                        //            {
+                                        //                colorCell(worksheet, rowIndex, Color.Orange);
+                                        //            }
+                                        //        }
+                                        //    }
+                                        //    else
+                                        //    {
+                                        //        if (worksheet.Cells[rowIndex, 5].Value != "-" && worksheet.Cells[rowIndex, 6].Value != "-" && worksheet.Cells[rowIndex, 5].Value != null && worksheet.Cells[rowIndex, 6].Value != null)
+                                        //        {
 
-                            //else
-                            //{
-                            //    if (eventItem.Time == firstEventType0.Time)
-                            //    {
-                            //        if ((star_time - eventItem.Time > TimeSpan.FromMinutes(3)) && eventItem.Time < star_time)
-                            //        {
-                            //            colorCell(worksheet, rowIndex, Color.Green);
-                            //        }
-                            //        else
-                            //        {
-                            //            if (worksheet.Cells[rowIndex, 5].Value != " - " && worksheet.Cells[rowIndex, 6].Value != "-" && worksheet.Cells[rowIndex, 5].Value != null && worksheet.Cells[rowIndex, 6].Value != null)
-                            //            {
-                            //                if (toTimeOnly(worksheet.Cells[rowIndex, 5].Value.ToString()) <= eventItem.Time && eventItem.Time <= toTimeOnly(worksheet.Cells[rowIndex, 6].Value.ToString()))
-                            //                {
-                            //                    colorCell(worksheet, rowIndex, Color.Yellow);
-                            //                }
-                            //            }
-                            //            else
-                            //            {
-                            //                colorCell(worksheet, rowIndex, Color.Orange);
-                            //            }
-                            //        }
-                            //    }
-                            //    else
-                            //    {
-                            //        if (worksheet.Cells[rowIndex, 5].Value != "-" && worksheet.Cells[rowIndex, 6].Value != "-" && worksheet.Cells[rowIndex, 5].Value != null && worksheet.Cells[rowIndex, 6].Value != null)
-                            //        {
-                                        
-                            //            if (toTimeOnly(worksheet.Cells[rowIndex, 5].Value.ToString()) <= eventItem.Time && eventItem.Time <= toTimeOnly(worksheet.Cells[rowIndex, 6].Value.ToString()))
-                            //            {
-                            //                colorCell(worksheet, rowIndex, Color.Yellow);
-                            //            }
-                                        
-                            //        }
-                            //        else
-                            //        {
-                            //            if (eventItem.Time > star_time && (eventItem.Time <= employee.WorkSchedule.LunchStart || eventItem.Time >= employee.WorkSchedule.LunchEnd) && eventItem.Time <= end_time)
-                            //            {
-                            //                colorCell(worksheet, rowIndex, Color.Orange);
-                            //            }
-                            //            if (eventItem.Time < star_time || eventItem.Time > end_time)
-                            //            {
-                            //                colorCell(worksheet, rowIndex, Color.Green);
-                            //            }
-                            //        }
-                            //    }
-                            //}
-                           
+                                        //            if (toTimeOnly(worksheet.Cells[rowIndex, 5].Value.ToString()) <= eventItem.Time && eventItem.Time <= toTimeOnly(worksheet.Cells[rowIndex, 6].Value.ToString()))
+                                        //            {
+                                        //                colorCell(worksheet, rowIndex, Color.Yellow);
+                                        //            }
 
-                            //if (eventItem.Time == firstEventType0.Time)
-                            //{
-                            //    if ((star_time - eventItem.Time > TimeSpan.FromMinutes(3)) && eventItem.Time < star_time)
-                            //    {
-                            //        // Устанавливаем цвет фона для ячейки
-                            //        worksheet.Cells[rowIndex, 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                            //        worksheet.Cells[rowIndex, 2].Style.Fill.BackgroundColor.SetColor(Color.Green);
-                            //    }
-                            //}
+                                        //        }
+                                        //        else
+                                        //        {
+                                        //            if (eventItem.Time > star_time && (eventItem.Time <= employee.WorkSchedule.LunchStart || eventItem.Time >= employee.WorkSchedule.LunchEnd) && eventItem.Time <= end_time)
+                                        //            {
+                                        //                colorCell(worksheet, rowIndex, Color.Orange);
+                                        //            }
+                                        //            if (eventItem.Time < star_time || eventItem.Time > end_time)
+                                        //            {
+                                        //                colorCell(worksheet, rowIndex, Color.Green);
+                                        //            }
+                                        //        }
+                                        //    }
+                                        //}
 
-                            //if (eventItem.Time == lastEventType1.Time)
-                            //{
-                            //    if ((eventItem.Time - end_time > TimeSpan.FromMinutes(3)) && eventItem.Time > end_time)
-                            //    {
-                            //        // Устанавливаем цвет фона для ячейки
-                            //        worksheet.Cells[rowIndex, 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                            //        worksheet.Cells[rowIndex, 2].Style.Fill.BackgroundColor.SetColor(Color.Green);
-                            //    }
-                            //}
 
-                            //if (worksheet.Cells[rowIndex, 5].Value == "-" && worksheet.Cells[rowIndex, 5].Value == "-")
-                            //{
-                            //    if (eventItem.Time == firstEventType0.Time)
-                            //    {
-                            //        if ((star_time - eventItem.Time > TimeSpan.FromMinutes(3)) && eventItem.Time < star_time)
-                            //        {
-                            //            // Устанавливаем цвет фона для ячейки
-                            //            worksheet.Cells[rowIndex, 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                            //            worksheet.Cells[rowIndex, 2].Style.Fill.BackgroundColor.SetColor(Color.Orange);
-                            //        }
-                            //    }
+                                        //if (eventItem.Time == firstEventType0.Time)
+                                        //{
+                                        //    if ((star_time - eventItem.Time > TimeSpan.FromMinutes(3)) && eventItem.Time < star_time)
+                                        //    {
+                                        //        // Устанавливаем цвет фона для ячейки
+                                        //        worksheet.Cells[rowIndex, 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                        //        worksheet.Cells[rowIndex, 2].Style.Fill.BackgroundColor.SetColor(Color.Green);
+                                        //    }
+                                        //}
 
-                            //    if (eventItem.Time == lastEventType1.Time)
-                            //    {
-                            //        if ((eventItem.Time - end_time > TimeSpan.FromMinutes(3)) && eventItem.Time > end_time)
-                            //        {
-                            //            // Устанавливаем цвет фона для ячейки
-                            //            worksheet.Cells[rowIndex, 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                            //            worksheet.Cells[rowIndex, 2].Style.Fill.BackgroundColor.SetColor(Color.Orange);
-                            //        }
-                            //    }
-                            //}
+                                        //if (eventItem.Time == lastEventType1.Time)
+                                        //{
+                                        //    if ((eventItem.Time - end_time > TimeSpan.FromMinutes(3)) && eventItem.Time > end_time)
+                                        //    {
+                                        //        // Устанавливаем цвет фона для ячейки
+                                        //        worksheet.Cells[rowIndex, 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                        //        worksheet.Cells[rowIndex, 2].Style.Fill.BackgroundColor.SetColor(Color.Green);
+                                        //    }
+                                        //}
 
-                            worksheet.Cells[rowIndex, 3].Value = eventItem.EventType.Name;
+                                        //if (worksheet.Cells[rowIndex, 5].Value == "-" && worksheet.Cells[rowIndex, 5].Value == "-")
+                                        //{
+                                        //    if (eventItem.Time == firstEventType0.Time)
+                                        //    {
+                                        //        if ((star_time - eventItem.Time > TimeSpan.FromMinutes(3)) && eventItem.Time < star_time)
+                                        //        {
+                                        //            // Устанавливаем цвет фона для ячейки
+                                        //            worksheet.Cells[rowIndex, 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                        //            worksheet.Cells[rowIndex, 2].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+                                        //        }
+                                        //    }
+
+                                        //    if (eventItem.Time == lastEventType1.Time)
+                                        //    {
+                                        //        if ((eventItem.Time - end_time > TimeSpan.FromMinutes(3)) && eventItem.Time > end_time)
+                                        //        {
+                                        //            // Устанавливаем цвет фона для ячейки
+                                        //            worksheet.Cells[rowIndex, 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                        //            worksheet.Cells[rowIndex, 2].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+                                        //        }
+                                        //    }
+                                        //}
+
+                                        worksheet.Cells[rowIndex, 3].Value = eventItem.EventType.Name;
                             worksheet.Cells[rowIndex, 4].Value = eventItem.Territory;
 
                             rowIndex++;
@@ -412,7 +425,11 @@ namespace ReportSys.Pages.Services
                         // Если нет событий для даты, все равно добавляем строку
                         if (eventsForDate.Count == 0)
                         {
-                            worksheet.Cells[rowIndex, 1].Value = date.ToString("yyyy-MM-dd");
+                            worksheet.Cells[rowIndex, 1].Value = date.ToString("dd-MM-yyyy");
+                            if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                            {
+                                colorCell(worksheet, rowIndex, Color.White);
+                            }
                             worksheet.Cells[rowIndex, 2].Value = "-";
                             worksheet.Cells[rowIndex, 3].Value = "-";
                             worksheet.Cells[rowIndex, 4].Value = "-";
@@ -748,11 +765,17 @@ namespace ReportSys.Pages.Services
                                     timPosDevsS = timPosDevsS.Add(startTime - firstEventType0.Time);
                                 }
                             }
+                            if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                            {
+                                colorCell(data.Worksheet, data.Row - 1, i, Color.SkyBlue);
+                              
+                            }
                         }
                         else
                         {
                             colorCell(data.Worksheet, data.Row - 1, i, Color.Pink);
                         }
+                        
                         if (lastEventType1 != null)
                         {
                             data.Worksheet.Cells[data.Row, i].Value = lastEventType1.Time.ToString("HH:mm:ss");
@@ -798,12 +821,19 @@ namespace ReportSys.Pages.Services
                                     numPosDevsE++;
                                     timPosDevsE = timPosDevsE.Add(lastEventType1.Time - endTime);
                                 }
+                                
+                            }
+                            if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                            {
+                                colorCell(data.Worksheet, data.Row, i, Color.SkyBlue);
+
                             }
                         }
                         else
                         {
                             colorCell(data.Worksheet, data.Row, i, Color.Pink);
                         }
+
                         if (lastEventType1 != null || firstEventType0 != null)
                         {
                             numWorkDays++;
@@ -825,6 +855,13 @@ namespace ReportSys.Pages.Services
                         {
                             colorCell(data.Worksheet, data.Row - 1, i, Color.SandyBrown);
                             colorCell(data.Worksheet, data.Row, i, Color.SandyBrown);
+                        }
+
+
+                        if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                        {
+                            colorCell(data.Worksheet, data.Row - 1, i, Color.White);
+                            colorCell(data.Worksheet, data.Row, i, Color.White);
                         }
                         i++;
                     }

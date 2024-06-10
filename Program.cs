@@ -13,8 +13,8 @@ builder.WebHost.UseElectron(args);
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ReportSysContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"));
-    //options.UseSqlite("Filename=MyDatabase.db");
+    //options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"));
+    options.UseSqlite("Filename=MyDatabase.db");
 });
 
 var app = builder.Build();
@@ -38,7 +38,7 @@ using (var scope = app.Services.CreateScope())
 
 
     var db = serviceProvider.GetRequiredService<ReportSysContext>();
-    //await db.Database.EnsureDeletedAsync();
+    await db.Database.EnsureDeletedAsync();
     await db.Database.EnsureCreatedAsync();
     await ReportSysContextSeed.InitializeDb(db);
 

@@ -1,0 +1,29 @@
+﻿@page
+@model ConfigureDbModel
+
+<h2>Настройка подключения к базе данных</h2>
+
+<form method="post">
+    <div>
+        <label>Сервер</label>
+        <input type="text" asp-for="DbSettings.Server" />
+    </div>
+    <div>
+        <label>База данных</label>
+        <input type="text" asp-for="DbSettings.Database" />
+    </div>
+    <div>
+        <label>Имя пользователя</label>
+        <input type="text" asp-for="DbSettings.Username" />
+    </div>
+    <div>
+        <label>Пароль</label>
+        <input type="password" asp-for="DbSettings.Password" />
+    </div>
+    <button type="submit">Сохранить</button>
+</form>
+
+@if (Model.Message != null)
+{
+    <div>@Model.Message</div>
+}

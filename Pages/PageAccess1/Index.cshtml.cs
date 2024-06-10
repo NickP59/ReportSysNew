@@ -158,10 +158,10 @@ namespace ReportSys.Pages.PageAccess1
             Dates = new List<DateOnly>();
             for (var date = StartDate; date <= EndDate; date = date.AddDays(1))
             {
-                if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
-                {
-                    continue; // Пропускаем субботу и воскресенье
-                }
+                //if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                //{
+                //    continue; // Пропускаем субботу и воскресенье
+                //}
                 Dates.Add(date);
             }
 
@@ -428,6 +428,7 @@ namespace ReportSys.Pages.PageAccess1
                                             if (unf.UnavailabilityTypeId != 4)
                                             {
                                                 colorCell(worksheet, row - 1, i, Color.SkyBlue);
+                                                
 
                                             }
                                             else if (firstEventType0.Time < unf.UnavailabilityFrom || firstEventType0.Time > unf.UnavailabilityBefore)
@@ -467,6 +468,10 @@ namespace ReportSys.Pages.PageAccess1
                                             timPosDevsS = timPosDevsS.Add(startTime - firstEventType0.Time);
                                         }
                                     }
+                                    if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                                    {
+                                        colorCell(worksheet, row-1, i, Color.SkyBlue);
+                                    }
                                 }
                                 else
                                 {
@@ -504,6 +509,8 @@ namespace ReportSys.Pages.PageAccess1
                                             numNegDevsE++;
                                             timNegDevsE = timNegDevsE.Add(endTime - lastEventType1.Time);
                                         }
+                                       
+                                        
 
                                     }
                                     if (lastEventType1.Time - endTime > TimeSpan.FromMinutes(3) && lastEventType1.Time > endTime)
@@ -525,12 +532,18 @@ namespace ReportSys.Pages.PageAccess1
                                         }
 
                                     }
-
+                                    if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                                    {
+                                        colorCell(worksheet, row, i, Color.SkyBlue);
+                                    }
                                 }
                                 else
                                 {
                                     colorCell(worksheet, row, i, Color.Pink);
                                 }
+
+                               
+
                                 if (lastEventType1 != null || firstEventType0 != null)
                                 {
                                     numWorkDays++;
@@ -549,7 +562,7 @@ namespace ReportSys.Pages.PageAccess1
                                 }
                                 i++;
                             }
-                            else
+                            else if (events == null || events.Count == 0)
                             {
                                 
                                 if (unf != null)
@@ -567,6 +580,14 @@ namespace ReportSys.Pages.PageAccess1
                                     colorCell(worksheet, row - 1, i, Color.SandyBrown);
                                     colorCell(worksheet, row, i, Color.SandyBrown);
                                 }
+
+
+                                if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                                {
+                                    colorCell(worksheet, row-1, i, Color.White);
+                                    colorCell(worksheet, row, i, Color.White);
+                                }
+                                
                                 i++;
                             }
 
