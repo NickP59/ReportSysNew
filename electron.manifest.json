@@ -6,7 +6,7 @@
   "name": "ReportSys",
   "author": "",
   "singleInstance": false,
-  "environment": "Production",
+  "environment": "Development",
   "build": {
     "appId": "com.ReportSys.app",
     "productName": "ReportSys",

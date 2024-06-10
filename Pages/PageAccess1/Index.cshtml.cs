@@ -39,14 +39,14 @@ namespace ReportSys.Pages.PageAccess1
         [BindProperty]
         public List<int> SelectedDepartIds { get; set; }
 
+        [BindProperty]
         public string _id { get; set; }
         public string _name { get; set; }
 
         [BindProperty]
-        public DateOnly StartDate { get; set; }
-
+        public string StartDateString { get; set; }
         [BindProperty]
-        public DateOnly EndDate { get; set; }
+        public string EndDateString { get; set; }
 
         [BindProperty]
         public List<DateOnly> Dates { get; set; }
@@ -55,10 +55,39 @@ namespace ReportSys.Pages.PageAccess1
         [BindProperty]
         public string Action { get; set; }
 
+
+
+        public DateOnly StartDate
+        {
+            get
+            {
+                // Попытка преобразовать строку в DateOnly
+                if (DateOnly.TryParse(StartDateString, out var date))
+                {
+                    return date;
+                }
+                // Возврат значения по умолчанию, если преобразование не удалось
+                return DateOnly.FromDateTime(DateTime.Now);
+            }
+        }
+        public DateOnly EndDate
+        {
+            get
+            {
+                // Попытка преобразовать строку в DateOnly
+                if (DateOnly.TryParse(EndDateString, out var date))
+                {
+                    return date;
+                }
+                // Возврат значения по умолчанию, если преобразование не удалось
+                return DateOnly.FromDateTime(DateTime.Now);
+            }
+        }
+
         public async Task<IActionResult> OnGetAsync(string myParameter)
         {
             var employeeNumber = myParameter;
-            _id = employeeNumber;
+            _id = myParameter;
 
             if (string.IsNullOrEmpty(employeeNumber))
             {
@@ -647,7 +676,23 @@ namespace ReportSys.Pages.PageAccess1
 
                 worksheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                 worksheet.Row(2).Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+
+
                 package.Save();
+                //// Указываем относительный путь для сохранения файла
+                //string relativePath = @"Output\Departments.xlsx";
+                //// Получаем полный путь в папке проекта
+                //string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath);
+                //// Убедимся, что директория существует
+                //string directoryPath = Path.GetDirectoryName(fullPath); if (!Directory.Exists(directoryPath))
+                //{
+                //    Directory.CreateDirectory(directoryPath);
+                //}
+                //// Сохраняем пакет (файл)
+                //FileInfo file = new FileInfo(fullPath);
+               
+
+                //await package.SaveAsAsync(file);
             }
             stream.Position = 0;
             var fileName = "Departments.xlsx";

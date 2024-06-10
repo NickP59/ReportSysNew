@@ -96,9 +96,13 @@ namespace ReportSys.Pages.Services
 
         public async Task<IActionResult> CreateXlsxFirst(ReportSysContext _context, List<string> employeeNumbers, DateOnly startDate, DateOnly endDate)
         {
+            // Убедитесь, что EPPlus имеет лицензию
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             var stream = new MemoryStream();
             using (var package = new ExcelPackage(stream))
             {
+                //var worksheet = package.Workbook.Worksheets.Add(employeeNumbers[0]);
+
                 foreach (var employeeNumber in employeeNumbers)
                 {
                     var employee = await _context.Employees
@@ -476,9 +480,24 @@ namespace ReportSys.Pages.Services
                     worksheet.Cells[$"I5:I{rowIndex}"].Style.Border.Left.Style = ExcelBorderStyle.Thin;
                     worksheet.Cells[$"I5:I{rowIndex}"].Style.Border.Right.Style = ExcelBorderStyle.Thin;
                     worksheet.Cells[$"I5:I{rowIndex}"].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                }   
+                }
 
                 package.Save();
+
+                //// Указываем относительный путь для сохранения файла
+                //string relativePath = @"Output\Employee.xlsx";
+                //// Получаем полный путь в папке проекта
+                //string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath);
+                //// Убедимся, что директория существует
+                //string directoryPath = Path.GetDirectoryName(fullPath); if (!Directory.Exists(directoryPath))
+                //{
+                //    Directory.CreateDirectory(directoryPath);
+                //}
+                //// Сохраняем пакет (файл)
+                //FileInfo file = new FileInfo(fullPath);
+                ////package.SaveAs(file);
+
+                //await package.SaveAsAsync(file);
             }
 
             stream.Position = 0;

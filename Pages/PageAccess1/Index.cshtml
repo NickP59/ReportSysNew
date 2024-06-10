@@ -58,6 +58,7 @@
     <h2>@Model._name</h2>
 
     <form method="post">
+        <input type="hidden" asp-for="_id" />
         <div class="form-group">
             <label asp-for="SelectedEmployeeIds" class="control-label">Сотрудники</label>
             <input type="text" id="empSearch" class="form-control mb-2" placeholder="Поиск сотрудника...">
@@ -75,12 +76,16 @@
         </div>
 
         <div class="form-group">
+            @* <label for="startDate">Start Date:</label>
+            <input type="date" class="form-control" id="startDate" name="startDate" />*@
             <label for="startDate">Start Date:</label>
-            <input type="date" id="startDate" name="startDate" class="form-control" asp-for="StartDate" />
+            <input type="date" id="startDate" class="form-control" name="StartDateString" value="@Model.StartDateString" />
         </div>
         <div class="form-group">
+            @*<label for="endDate">End Date:</label>
+            <input type="date" class="form-control" id="endDate" name="endDate" />*@
             <label for="endDate">End Date:</label>
-            <input type="date" id="endDate" name="endDate" class="form-control" asp-for="EndDate" />
+            <input type="date" id="endDate" class="form-control" name="EndDateString" value="@Model.EndDateString" />
         </div>
 
         <button type="submit" name="action" value="Action1" class="btn btn-primary" disabled>Отчет по сотрудникам</button>
