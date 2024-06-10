@@ -1,0 +1,50 @@
+﻿@page
+@model ReportSys.Pages.PageAccess0.IndexModel
+@{
+}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Model._name</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const startDateInput = document.getElementById('startDate');
+            const endDateInput = document.getElementById('endDate');
+            const submitButton = document.querySelector('button[type="submit"]');
+
+            function toggleSubmitButton() {
+                const startDateValue = new Date(startDateInput.value);
+                const endDateValue = new Date(endDateInput.value);
+
+                if (startDateInput.value && endDateInput.value && startDateValue <= endDateValue) {
+                    submitButton.disabled = false;
+                } else {
+                    submitButton.disabled = true;
+                }
+            }
+
+            startDateInput.addEventListener('input', toggleSubmitButton);
+            endDateInput.addEventListener('input', toggleSubmitButton);
+
+            toggleSubmitButton(); // Initial check
+        });
+    </script>
+</head>
+<body>
+    <h2>@Model._name</h2>
+    <form method="post">
+        <div class="form-group">
+            <label for="startDate">Start Date:</label>
+            <input type="date" class="form-control" id="startDate" name="startDate" />
+        </div>
+        <div class="form-group">
+            <label for="endDate">End Date:</label>
+            <input type="date" class="form-control" id="endDate" name="endDate" />
+        </div>
+        <button type="submit" class="btn btn-primary" disabled>Отчет</button>
+    </form>
+</body>
+</html>
